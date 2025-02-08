@@ -1,0 +1,24 @@
+﻿# Ignore build output and temporary files
+bin/
+obj/
+
+# Ignore Visual Studio files
+.vs/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.cache
+*.pdb
+*.log
+
+# Ignore system files
+Thumbs.db
+desktop.ini
+
+# Ignore lock files and database
+*.lock
+*.db
+*.mdf
+*.ldf
