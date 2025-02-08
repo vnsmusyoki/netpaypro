@@ -1,0 +1,1 @@
+﻿global using netpaypro.Data.DataModels;
