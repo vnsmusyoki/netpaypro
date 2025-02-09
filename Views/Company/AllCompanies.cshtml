@@ -1,6 +1,9 @@
 ﻿
+@model List<netpaypro.Data.DataModels.Company>
 @{
+    ViewData["Title"] = "All Companies";
 
+    var companiesCount = ViewBag.CompanyCount;
 }
 <!-- start page title -->
 <div class="row">
@@ -19,18 +22,96 @@
         </div>
     </div>
 </div>
- 
+
+<div class="row">
+    <div class="col-xxl-3 col-sm-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">All Companies</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="@companiesCount">@companiesCount</span></h2>
+                     </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-info-subtle text-info rounded-circle fs-4">
+                                <i class="ri-ticket-2-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div> <!-- end card-->
+    </div>
+    <!--end col-->
+    <div class="col-xxl-3 col-sm-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">Confirmed </p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="@companiesCount">@companiesCount</span></h2>
+                     </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-warning-subtle text-warning rounded-circle fs-4">
+                                <i class="mdi mdi-timer-sand"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div>
+    <!--end col-->
+    <div class="col-xxl-3 col-sm-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">New Companies</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="@companiesCount">@companiesCount</span></h2>
+                    </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-success-subtle text-success rounded-circle fs-4">
+                                <i class="ri-checkbox-circle-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div>
+    <!--end col-->
+    <div class="col-xxl-3 col-sm-6">
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="fw-medium text-muted mb-0">Blocked Companies</p>
+                        <h2 class="mt-4 ff-secondary fw-semibold"><span class="counter-value" data-target="@companiesCount">@companiesCount</span>%</h2>
+                    </div>
+                    <div>
+                        <div class="avatar-sm flex-shrink-0">
+                            <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-4">
+                                <i class="ri-delete-bin-line"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div>
+    </div>
+    <!--end col-->
+</div>
  
 
 <div class="row">
     <div class="col-xxl-12">
        
         <div class="card">
-            <div class="card-body">
-                <p class="text-muted">
-                   All Companies
-                </p>
-            </div>
+            
             <div class="border">
                 <ul class="nav nav-pills custom-hover-nav-tabs">
                     <li class="nav-item">
@@ -70,70 +151,130 @@
                 <div class="tab-content text-muted">
                     <div class="tab-pane show active"
                          id="custom-hover-customere">
-                            
 
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card" id="tasksList">
+                                     
+                                    <div class="card-body border border-dashed border-end-0 border-start-0">
+                                        <form>
+                                            <div class="row g-3">
+                                                <div class="col-xxl-5 col-sm-12">
+                                                    <div class="search-box">
+                                                        <input type="text" class="form-control search bg-light border-light" placeholder="Search for tasks or something...">
+                                                        <i class="ri-search-line search-icon"></i>
+                                                    </div>
+                                                </div>
+                                              
+                                            </div>
+                                            <!--end row-->
+                                        </form>
+                                    </div>
+                                    <!--end card-body-->
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card mb-4">
+                                            <table class="table align-middle table-nowrap mb-0" id="tasksTable">
+                                                <thead class="table-light text-muted">
+                                                    <tr>
+                                                        <th scope="col" style="width: 40px;">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                            </div>
+                                                        </th>
+                                                        <th class="sort" data-sort="logo">Logo</th>
+                                                        <th class="sort" data-sort="company_name">Company</th>
+                                                        <th class="sort" data-sort="email">Email</th>
+                                                        <th class="sort" data-sort="phone">Phone Number</th>
+                                                        <th class="sort" data-sort="manager">Manager</th>
+                                                        <th class="sort" data-sort="date_added">Date Added</th>
+                                                        <th class="sort" data-sort="status">Status</th>
+                                                        <th class="sort" data-sort="actions">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="list form-check-all">
+                                                    @foreach (var company in Model)
+                                                    {
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="@company.Id">
+                                                                </div>
+                                                            </th>
+                                                            <td class="logo">
+                                                                @if (!string.IsNullOrEmpty(company.Logo))
+                                                                {
+                                                                    <img src="@Url.Content($"~/{company.Logo}")" alt="Logo" class="rounded-circle avatar-xxs" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-muted">No Logo</span>
+                                                                }
+                                                            </td>
+                                                            <td class="company_name">
+                                                                <a href="#" class="fw-medium link-primary">@company.CompanyName</a>
+                                                            </td>
+                                                            <td class="email">@company.Email</td>
+                                                            <td class="phone">@company.Phone</td>
+                                                            <td class="manager">
+                                                                @if (company.Manager != null)
+                                                                {
+                                                                    @company.Manager.FullName
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="text-muted">Unassigned</span>
+                                                                }
+                                                            </td>
+                                                            <td class="date_added">@company.CreatedAt.ToString("dd MMM, yyyy")</td>
+                                                            <td class="status">
+                                                                <span class="badge bg-secondary-subtle text-secondary text-uppercase">Active</span>
+                                                            </td>
+                                                            <td class="actions">
+                                                                <ul class="list-inline tasks-list-menu mb-0">
+                                                                    <li class="list-inline-item">
+                                                                        <a  asp-action="Details" asp-controller="Company" asp-route-id="@company.Id" >
+                                                                            <i class="ri-eye-fill align-bottom me-2 text-muted"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <a href="#showModal" class="edit-item-btn" data-bs-toggle="modal" data-id="@company.Id">
+                                                                            <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <a class="remove-item-btn" data-bs-toggle="modal" href="#deleteOrder" data-id="@company.Id">
+                                                                            <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                         
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-2">
+                                            <div class="pagination-wrap hstack gap-2">
+                                                <a class="page-item pagination-prev disabled" href="#">
+                                                    Previous
+                                                </a>
+                                                <ul class="pagination listjs-pagination mb-0"></ul>
+                                                <a class="page-item pagination-next" href="#">
+                                                    Next
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end card-body-->
+                                </div>
+                                <!--end card-->
+                            </div>
+                            <!--end col-->
+                        </div>
                           </div>
-                    <div class="tab-pane" id="custom-hover-description">
-                        <h6>Description</h6>
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Categories</th>
-                                        <th scope="col">Author</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Building Web Apps With Wordpress</td>
-                                        <td>Web, Wordpress, Design</td>
-                                        <td>Lucia Victor</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Information Technology</th>
-                                        <td>Management, Manager, Design</td>
-                                        <td>Arora Sumita</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="custom-hover-reviews">
-                        <h6>Customer Reviews</h6>
-                        <div class="table-responsive">
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Location</th>
-                                        <th scope="col">Amount</th>
-                                        <th scope="col">Ratings</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Luke Brown</td>
-                                        <td>New York</td>
-                                        <td>$745</td>
-                                        <td>
-                                            4.4
-                                            <i class="ri-star-s-fill ms-1 text-warning align-middle"></i>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Matilda Walker</td>
-                                        <td>USA</td>
-                                        <td>$87.125</td>
-                                        <td>
-                                            2.7
-                                            <i class="ri-star-s-fill ms-1 text-warning align-middle"></i>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                     
                 </div>
             </div>
             <!-- end card-body -->

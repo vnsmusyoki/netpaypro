@@ -19,9 +19,11 @@ namespace netpaypro.Controllers.Company
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult AllCompanies()
+        public async Task<IActionResult> AllCompanies()
         {
-            return View("~/Views/Company/AllCompanies.cshtml");
+            var companies = await _context.Companies.Include(c => c.Manager).Include(c => c.Users).ToListAsync();
+            ViewBag.CompanyCount = companies.Count;
+            return View("~/Views/Company/AllCompanies.cshtml", companies);
         }
 
 
@@ -113,6 +115,20 @@ namespace netpaypro.Controllers.Company
             ViewBag.Countries = countries;
 
             return View("~/Views/Company/AddCompany.cshtml", createCompanyVM);
+        }
+
+
+        public async Task<IActionResult> Details(int Id)
+        {
+            var CompanyDetails = await _context.Companies.Include(c => c.Manager).Include(c => c.Users).Where(c => c.Id == Id).FirstOrDefaultAsync();
+
+            if (CompanyDetails == null)
+            {
+                return RedirectToAction(nameof(AllCompanies));
+            }
+
+            return View("~/Views/Company/CompanyDetails.cshtml", CompanyDetails);
+
         }
 
     }
