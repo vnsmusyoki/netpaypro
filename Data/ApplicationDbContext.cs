@@ -30,7 +30,6 @@ namespace netpaypro.Data
        .HasForeignKey(u => u.CompanyId)
        .OnDelete(DeleteBehavior.Restrict);
 
-            // Configure the one-to-one relationship: Company -> Manager
             builder.Entity<Company>()
                 .HasOne(c => c.Manager)
                 .WithMany()

@@ -1,23 +1,59 @@
 ﻿@page
 @model RegisterConfirmationModel
 @{
+
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
     ViewData["Title"] = "Register confirmation";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="text-center mt-sm-5 mb-4 text-white-50">
+                <div>
+                    <a asp-for="Index" asp-controller="Home" class="d-inline-block auth-logo">
+                        <img src="~/assets/images/logo-light.png" alt="" height="20">
+                    </a>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+            <div class="card mt-4 card-bg-fill">
+                <div class="card-body p-4 text-center">
+                    <div class="avatar-lg mx-auto mt-2">
+                        <div class="avatar-title bg-light text-success display-3 rounded-circle">
+                            <i class="ri-checkbox-circle-fill"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-2">
+                        <h4>Well done !</h4>
+                        @if (Model.DisplayConfirmAccountLink)
+                        {
+                            <p class="text-muted mx-4">
+                                This app does not currently have a real email sender registered.
+                            </p>
+                            <div class="mt-4">
+                                <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="btn btn-success w-100">Click here to confirm your account</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mx-4">
+                                Please check your email to confirm your account.
+                            </p>
+                        }
 
+                    </div>
+                </div>
+                <!-- end card body -->
+            </div>
+            <!-- end card -->
+
+        </div>
+    </div>
+    <!-- end row -->
+</div>
+    

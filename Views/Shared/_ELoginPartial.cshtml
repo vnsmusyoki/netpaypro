@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Identity;
+
+@inject SignInManager<ApplicationUser> SignInManager;
+@inject UserManager<ApplicationUser> UserManager;
+
+@if (SignInManager.IsSignedIn(User))
+{ 
+    <a asp-action="Index" asp-controller="Dashboard" class="btn btn-primary">My Account</a>
+}
+else
+{
+    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-link fw-medium text-decoration-none text-body">Sign in</a>
+    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Sign Up</a>
+}
+
