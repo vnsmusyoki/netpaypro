@@ -57,6 +57,27 @@ namespace netpaypro.Data
                        Id = "f35eb599-d371-46c7-b2e7-624d9c0b6296"
                    }
                 );
+
+            builder.Entity<Country>().HasData(
+                    new Country
+                    {
+                        Id = 1,
+                        CountryName = "Kenya",
+                        CountryCode = "254",
+                        CreatedAt = DateTime.Now,
+                        LastUpdatedAt = DateTimeOffset.UtcNow
+                    }
+                );
+            builder.Entity<City>().HasData(
+                    new City
+                    {
+                        Id = 1,
+                        CityName = "Nairobi",
+                        CountryId = 1,
+                        CreatedAt = DateTime.Now,
+                        LastUpdatedAt = DateTimeOffset.UtcNow
+                    }
+                );
         }
     }
 }

@@ -8,7 +8,7 @@
         public string Phone { get; set; }
         public string Address { get; set; }
         public City City { get; set; }
-        public int? Cityid { get; set; }
+        public int? CityId { get; set; }
         public Country Country { get; set; }
         public int? CountryId { get; set; }
 
@@ -16,6 +16,8 @@
         public string? Currency { get; set; }
         public string? PaymentMethod { get; set; }
         public decimal? TaxRate { get; set; }
+
+        public string? Logo { get; set; }
 
 
         // Relationships 

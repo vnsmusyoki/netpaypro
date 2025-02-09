@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250209180405_SeedCountryCityData")]
+    partial class SeedCountryCityData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 9, 21, 33, 42, 468, DateTimeKind.Local).AddTicks(4789),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 33, 42, 468, DateTimeKind.Unspecified).AddTicks(4789), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 9, 21, 4, 4, 158, DateTimeKind.Local).AddTicks(3464),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 4, 4, 158, DateTimeKind.Unspecified).AddTicks(3464), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -317,7 +320,7 @@ namespace netpaypro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CityId")
+                    b.Property<int?>("Cityid")
                         .HasColumnType("int");
 
                     b.Property<string>("CompanyName")
@@ -366,7 +369,7 @@ namespace netpaypro.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex("Cityid");
 
                     b.HasIndex("CountryId");
 
@@ -410,8 +413,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 9, 21, 33, 42, 468, DateTimeKind.Local).AddTicks(4765),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 33, 42, 468, DateTimeKind.Unspecified).AddTicks(4766), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 9, 21, 4, 4, 158, DateTimeKind.Local).AddTicks(3435),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 4, 4, 158, DateTimeKind.Unspecified).AddTicks(3436), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -491,7 +494,7 @@ namespace netpaypro.Data.Migrations
                 {
                     b.HasOne("netpaypro.Data.DataModels.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("Cityid");
 
                     b.HasOne("netpaypro.Data.DataModels.Country", "Country")
                         .WithMany()
