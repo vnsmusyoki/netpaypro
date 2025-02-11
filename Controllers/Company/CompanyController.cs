@@ -120,14 +120,34 @@ namespace netpaypro.Controllers.Company
 
         public async Task<IActionResult> Details(int Id)
         {
-            var CompanyDetails = await _context.Companies.Include(c => c.Manager).Include(c => c.Users).Where(c => c.Id == Id).FirstOrDefaultAsync();
+            var companyDetails = await _context.Companies.Include(c => c.Manager).Include(c => c.Users).Where(c => c.Id == Id).FirstOrDefaultAsync();
 
-            if (CompanyDetails == null)
+            if (companyDetails == null)
             {
                 return RedirectToAction(nameof(AllCompanies));
             }
 
-            return View("~/Views/Company/CompanyDetails.cshtml", CompanyDetails);
+            var viewDetails = new ViewCompanyVM
+            {
+                CompanyName = companyDetails.CompanyName,
+                RegistrationNumber = companyDetails.RegistrationNumber,
+                Email = companyDetails.Email,
+                Phone = companyDetails.Phone,
+                Address = companyDetails.Address,
+                CityId = companyDetails.CityId,
+                CountryId = companyDetails.CountryId,
+                Currency = companyDetails.Currency,
+                PaymentMethod = companyDetails.PaymentMethod,
+                TaxRate = companyDetails.TaxRate,
+                Users = companyDetails.Users,
+                Manager = companyDetails.Manager,
+                ManagerId = companyDetails.ManagerId,
+                Logo = companyDetails.Logo,
+                CreatedAt = companyDetails.CreatedAt,
+                LastUpdatedAt = companyDetails.LastUpdatedAt,
+            };
+
+            return View("~/Views/Company/CompanyDetails.cshtml", viewDetails);
 
         }
 
