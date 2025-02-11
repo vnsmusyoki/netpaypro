@@ -1,0 +1,104 @@
+﻿@model CreatePayrollEntryVM;
+@{
+    ViewData["Title"] = "Add Payroll Entry";
+}
+<div class="row">
+    <div class="col-xxl-12">
+        <div class="card">
+            <div class="card-header align-items-center d-flex">
+                <h4 class="card-title mb-0 flex-grow-1">Add Payroll Entry</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="CreatePayrollEntry" asp-controller="Payroll" method="post">
+                    <div class="row">
+                       @*  <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="ApplicationUserId" class="form-label"></label>
+                                <input asp-for="ApplicationUserId" class="form-control" placeholder="Enter Employee ID">
+                                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="CompanyId" class="form-label"></label>
+                                <input asp-for="CompanyId" class="form-control" placeholder="Enter Company ID">
+                                <span asp-validation-for="CompanyId" class="text-danger"></span>
+                            </div>
+                        </div> *@
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="PINNumber" class="form-label"></label>
+                                <input asp-for="PINNumber" class="form-control" placeholder="Enter PIN Number">
+                                <span asp-validation-for="PINNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="IDNumber" class="form-label"></label>
+                                <input asp-for="IDNumber" class="form-control" placeholder="Enter ID Number">
+                                <span asp-validation-for="IDNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="BasicPay" class="form-label"></label>
+                                <input asp-for="BasicPay" type="number" class="form-control" placeholder="Enter Basic Pay" step="0.01">
+                                <span asp-validation-for="BasicPay" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="HousingAllowance" class="form-label"></label>
+                                <input asp-for="HousingAllowance" type="number" class="form-control" placeholder="Enter Housing Allowance" step="0.01">
+                                <span asp-validation-for="HousingAllowance" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="GrossPay" class="form-label"></label>
+                                <input asp-for="GrossPay" type="number" class="form-control" placeholder="Enter Gross Pay" step="0.01">
+                                <span asp-validation-for="GrossPay" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="IncomeTax" class="form-label"></label>
+                                <input asp-for="IncomeTax" type="number" class="form-control" placeholder="Enter Income Tax" step="0.01">
+                                <span asp-validation-for="IncomeTax" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="NettPay" class="form-label"></label>
+                                <input asp-for="NettPay" type="number" class="form-control" placeholder="Enter Nett Pay" step="0.01">
+                                <span asp-validation-for="NettPay" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="PayrollMonth" class="form-label"></label>
+                                <input asp-for="PayrollMonth" type="number" class="form-control" placeholder="Enter Payroll Month (1-12)">
+                                <span asp-validation-for="PayrollMonth" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="PayrollYear" class="form-label"></label>
+                                <input asp-for="PayrollYear" type="number" class="form-control" placeholder="Enter Payroll Year">
+                                <span asp-validation-for="PayrollYear" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
