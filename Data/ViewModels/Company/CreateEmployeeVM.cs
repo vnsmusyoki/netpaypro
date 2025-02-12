@@ -27,7 +27,7 @@ namespace netpaypro.Data.ViewModels.Company
 
         [Required(ErrorMessage = "Phone number is required.")]
         [Phone(ErrorMessage = "Invalid phone number format.")]
-        [RegularExpression(@"^\+?\d{10,15}$", ErrorMessage = "Phone number must be between 10 to 15 digits.")]
+        [RegularExpression(@"^\+?\d{10,15}$", ErrorMessage = "Phone number must be between 10 to 12 digits.")]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Is Active status is required.")]

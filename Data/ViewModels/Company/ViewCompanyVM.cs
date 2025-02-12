@@ -29,5 +29,7 @@ namespace netpaypro.Data.ViewModels.Company
         public DateTimeOffset? LastUpdatedAt { get; set; }
 
         public DateTime? CreatedAt { get; set; }
+
+        public int Id { get; set; }
     }
 }

@@ -1040,9 +1040,8 @@
                                                     <i class="ri-more-fill fs-17"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-eye-fill text-muted me-2 align-bottom"></i>View</a></li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-star-fill text-muted me-2 align-bottom"></i>Favourite</a></li>
-                                                    <li><a class="dropdown-item" href="javascript:void(0);"><i class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Delete</a></li>
+                                                        <li><a class="dropdown-item" asp-action="EmployeeProfile" asp-controller="Employee" asp-route-id="@Employee.Id" asp-route-companyId="@Model.Id" asp-route-returnUrl="@Context.Request.Path"><i class="ri-eye-fill text-muted me-2 align-bottom"></i>View</a></li>
+                                                        <li><a class="dropdown-item" asp-action="DeleteEmployee" asp-controller="Employee" asp-route-id="@Employee.Id" asp-route-companyId="@Model.Id" asp-route-returnUrl="@Context.Request.Path"><i class="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>Delete</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -1054,27 +1053,27 @@
                                             </div>
                                             <div class="team-content">
                                                 <a href="#" class="d-block">
-                                                    <h5 class="fs-16 mb-1">Jennifer Carter</h5>
+                                                    <h5 class="fs-16 mb-1">@Employee.FullName</h5>
                                                 </a>
-                                                <p class="text-muted mb-0">UI/UX Designer</p>
+                                                <p class="text-muted mb-0">@Employee.Email</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col">
                                         <div class="row text-muted text-center">
-                                            <div class="col-6 border-end border-end-dashed">
-                                                <h5 class="mb-1">225</h5>
-                                                <p class="text-muted mb-0">Projects</p>
+                                            <div class="col-6 border-end border-end-dashed"> 
+                                                <p class="text-muted mb-0">@Employee.PhoneNumber</p>
                                             </div>
-                                            <div class="col-6">
-                                                <h5 class="mb-1">197</h5>
-                                                <p class="text-muted mb-0">Tasks</p>
+                                            <div class="col-6"> 
+                                                <p class="text-muted mb-0">@Employee.CreatedAt.ToString("dd MMM yyyy")</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col">
                                         <div class="text-end">
-                                            <a href="pages-profile.html" class="btn btn-light view-btn">View Profile</a>
+                                                <a asp-action="EmployeeProfile" asp-controller="Employee"  asp-route-id="@Employee.Id" asp-route-companyId="@Model.Id" asp-route-returnUrl="@Context.Request.Path"
+                                                class="btn btn-light view-btn">View Profile</a>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1104,7 +1103,7 @@
                 <div class="row g-0 text-center text-sm-start align-items-center mb-3">
                     <div class="col-sm-6">
                         <div>
-                            <p class="mb-sm-0">Showing 1 to 10 of 12 entries</p>
+                            <p class="mb-sm-0">Showing 1 to 10 of @Model.Users?.Count entries</p>
                         </div>
                     </div> <!-- end col -->
                     <div class="col-sm-6">

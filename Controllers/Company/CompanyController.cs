@@ -145,6 +145,7 @@ namespace netpaypro.Controllers.Company
                 Logo = companyDetails.Logo,
                 CreatedAt = companyDetails.CreatedAt,
                 LastUpdatedAt = companyDetails.LastUpdatedAt,
+                Id = companyDetails.Id,
             };
 
             return View("~/Views/Company/CompanyDetails.cshtml", viewDetails);

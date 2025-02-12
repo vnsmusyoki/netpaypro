@@ -24,10 +24,10 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-                 <form asp-action="CreateCompany" asp-controller="Company" method="post" enctype="multipart/form-data">
+                 <form asp-action="StoreEmployee" asp-controller="Employee" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label" for="project-title-input" asp-for="FullName"></label>
-                    <input asp-form="FullName" class="form-control" id="project-title-input" placeholder="Enter employee name">
+                    <input asp-for="FullName" class="form-control" id="project-title-input" placeholder="Enter employee name">
                     <span class="text-danger" asp-validation-for="FullName"></span>
                 </div>
                 <div class="mb-3">
