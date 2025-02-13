@@ -126,7 +126,6 @@ namespace netpaypro.Controllers.Company
             {
                 return RedirectToAction(nameof(AllCompanies));
             }
-
             var viewDetails = new ViewCompanyVM
             {
                 CompanyName = companyDetails.CompanyName,

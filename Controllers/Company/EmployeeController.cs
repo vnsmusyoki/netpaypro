@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using netpaypro.Data;
+using netpaypro.Data.DataModels;
+using netpaypro.Data.Migrations;
 using netpaypro.Data.ViewModels.Company;
 
 namespace netpaypro.Controllers.Company
@@ -26,45 +28,77 @@ namespace netpaypro.Controllers.Company
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> StoreEmployee(CreateEmployeeVM createEmployeeVM)
         {
-            if (await CheckIfEmailExists(createEmployeeVM.Email))
+            try
             {
-                ModelState.AddModelError(nameof(createEmployeeVM.Email), "Email Already Exists");
+                if (await CheckIfEmailExists(createEmployeeVM.Email))
+                {
+                    ModelState.AddModelError(nameof(createEmployeeVM.Email), "Email Already Exists");
+                }
+                if (await CheckIfPhoneNumberExists(createEmployeeVM.PhoneNumber))
+                {
+                    ModelState.AddModelError(nameof(createEmployeeVM.PhoneNumber), "Phone Number Already Exists");
+                }
+                if (!ModelState.IsValid)
+                {
+                    return View("~/Views/Company/Employee/CreateEmployee.cshtml", createEmployeeVM);
+                }
+
+                var signedinuser = _userManager.GetUserId(User);
+                var userCompany = await _context.Companies
+                    .Where(c => c.ManagerId == signedinuser)
+                    .FirstOrDefaultAsync();
+
+                var employeeData = new ApplicationUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = createEmployeeVM.Email.ToLower(),
+                    NormalizedUserName = createEmployeeVM.Email.ToUpper(),
+                    Email = createEmployeeVM.Email,
+                    NormalizedEmail = createEmployeeVM.Email.ToUpper(),
+                    FullName = createEmployeeVM.FullName,
+                    PhoneNumber = createEmployeeVM.PhoneNumber,
+                    EmailConfirmed = false,
+                    IsActive = createEmployeeVM.IsActive,
+                    CompanyId = userCompany?.Id
+                };
+
+                var passwordHasher = new PasswordHasher<ApplicationUser>();
+                employeeData.PasswordHash = passwordHasher.HashPassword(employeeData, createEmployeeVM.Password);
+
+                var employeeDetails = new EmployeeDetail
+                {
+                    ApplicationUserId = employeeData.Id,
+                    PinNo = createEmployeeVM.PinNo,
+                    IdNo = createEmployeeVM.IdNo,
+                    NssfNo = createEmployeeVM.NssfNo,
+                    NhifNo = createEmployeeVM.NhifNo,
+                    ShaNo = createEmployeeVM.ShaNo,
+                    BasicPay = createEmployeeVM.BasicPay,
+                    HouseAllowance = createEmployeeVM.HouseAllowance
+                };
+
+                _context.Users.Add(employeeData);
+                _context.EmployeeDetails.Add(employeeDetails);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Employee added successfully!";
+                return RedirectToAction("Details", "Company", new { id = userCompany?.Id });
             }
-            if (await CheckIfPhoneNumberExists(createEmployeeVM.PhoneNumber))
+            catch (DbUpdateException dbEx)
             {
-                ModelState.AddModelError(nameof(createEmployeeVM.PhoneNumber), "Phone Number Already Exists");
+                TempData["ErrorMessage"] = "An error occurred while saving the employee data.";
+                ModelState.AddModelError("", "An error occurred while saving the employee data. Please try again.");
+                _logger.LogError(dbEx, "Database update error occurred in StoreEmployee method.");
             }
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return View("~/Views/Company/Employee/CreateEmployee.cshtml", createEmployeeVM);
+                TempData["ErrorMessage"] = "An error occurred while saving the employee data.";
+                ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
+                _logger.LogError(ex, "Unexpected error occurred in StoreEmployee method.");
             }
 
-            var signedinuser = _userManager.GetUserId(User);
-            var userCompany = await _context.Companies
-                .Where(c => c.ManagerId == signedinuser)
-                .FirstOrDefaultAsync();
-
-            var employeeData = new ApplicationUser
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = createEmployeeVM.Email.ToLower(),
-                NormalizedUserName = createEmployeeVM.Email.ToUpper(),
-                Email = createEmployeeVM.Email,
-                NormalizedEmail = createEmployeeVM.Email.ToUpper(),
-                FullName = createEmployeeVM.FullName,
-                PhoneNumber = createEmployeeVM.PhoneNumber,
-                EmailConfirmed = false,
-                CompanyId = userCompany?.Id
-            };
-
-            var passwordHasher = new PasswordHasher<ApplicationUser>();
-            employeeData.PasswordHash = passwordHasher.HashPassword(employeeData, createEmployeeVM.Password);
-
-            _context.Users.Add(employeeData);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Details", "Company", new { id = userCompany?.Id });
+            return View("~/Views/Company/Employee/CreateEmployee.cshtml", createEmployeeVM);
         }
+
         public async Task<IActionResult> EmployeeProfile(string id, int? companyId, string returnUrl)
         {
             _logger.LogInformation("Received ID: {Id}, Return URL: {ReturnUrl}", id, returnUrl);

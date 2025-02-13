@@ -21,62 +21,111 @@
 <!-- end page title -->
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                  <form asp-action="StoreEmployee" asp-controller="Employee" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
+                <div class="row">
+                <div class="mb-3 col-md-8">
                     <label class="form-label" for="project-title-input" asp-for="FullName"></label>
                     <input asp-for="FullName" class="form-control" id="project-title-input" placeholder="Enter employee name">
                     <span class="text-danger" asp-validation-for="FullName"></span>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-md-4">
 
                     <label class="form-label" for="project-title-input" asp-for="Email"></label>
                     <input type="text" asp-for="Email" class="form-control" id="project-title-input" placeholder="">
                     <span class="text-danger" asp-validation-for="Email"></span>
 
                 </div> 
-                <div class="mb-3">
+                <div class="mb-3 col-md-4">
 
                     <label class="form-label" for="project-title-input" asp-for="PhoneNumber"></label>
                     <input type="text" asp-for="PhoneNumber" class="form-control" id="project-title-input" placeholder="">
                     <span class="text-danger" asp-validation-for="PhoneNumber"></span>
 
+                </div> 
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="PinNo"></label>
+                    <input  asp-for="PinNo" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="PinNo"></span>
+
+                </div> 
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="IdNo"></label>
+                    <input  asp-for="IdNo" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="IdNo"></span>
+
+                </div> 
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="NssfNo"></label>
+                    <input  asp-for="NssfNo" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="NssfNo"></span>
+
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="NhifNo"></label>
+                    <input  asp-for="NhifNo" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="NhifNo"></span>
+
+                </div> 
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="ShaNo"></label>
+                    <input  asp-for="ShaNo" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="ShaNo"></span>
+
+                </div> 
+                <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="BasicPay"></label>
+                    <input  asp-for="BasicPay" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="BasicPay"></span>
+
+                </div> <div class="mb-3 col-md-4">
+
+                    <label class="form-label" for="project-title-input" asp-for="HouseAllowance"></label>
+                    <input  asp-for="HouseAllowance" class="form-control" id="project-title-input" placeholder="">
+                    <span class="text-danger" asp-validation-for="HouseAllowance"></span>
+
+                </div>
+                        <div class="col-lg-4 mb-3">
+                            <label for="choices-status-input" class="form-label" asp-for="IsActive"></label>
+                            <select class="form-select" id="choices-status-input" asp-for="IsActive">
+
+                                <option value="" selected>Click to select</option>
+                                <option value="true">Active</option>
+                                <option value="false">In Active</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="IsActive"></span>
+
+                        </div>
+                <div class="mb-3 col-md-4">
 
                     <label class="form-label" for="project-title-input" asp-for="Password"></label>
                     <input type="text" asp-for="Password" class="form-control" id="project-title-input" placeholder="">
                     <span class="text-danger" asp-validation-for="Password"></span>
 
                 </div>
-                <div class="mb-3">
+                <div class="mb-3 col-md-4">
 
                     <label class="form-label" for="project-title-input" asp-for="ConfirmPassword"></label>
                     <input type="text" asp-for="ConfirmPassword" class="form-control" id="project-title-input" placeholder="">
                     <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
 
                 </div>
-                    <div class="col-lg-4">
-                        <div class="mb-3 mb-lg-0">
-                            <label for="choices-status-input" class="form-label" asp-for="IsActive"></label>
-                            <select class="form-select"  id="choices-status-input" asp-for="IsActive">
-                                
-                                <option value="" selected>Click to select</option>
-                                <option value="true" >Active</option>
-                                <option value="false">In Active</option>
-                            </select>
-                        <span class="text-danger" asp-validation-for="IsActive"></span>
-
-                        </div>
-                    </div>
+                   
                     <div class="mb-3">
                           <!-- end card -->
                        <div class="text-end"> 
                            <button type="submit" class="btn btn-success w-sm">Create</button>
                        </div>
                     </div> 
+            </div>
             </form>
 
             </div>

@@ -300,8 +300,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 9, 21, 33, 42, 468, DateTimeKind.Local).AddTicks(4789),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 33, 42, 468, DateTimeKind.Unspecified).AddTicks(4789), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 13, 11, 51, 53, 72, DateTimeKind.Local).AddTicks(3884),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 13, 8, 51, 53, 72, DateTimeKind.Unspecified).AddTicks(3885), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -410,9 +410,62 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 9, 21, 33, 42, 468, DateTimeKind.Local).AddTicks(4765),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 9, 18, 33, 42, 468, DateTimeKind.Unspecified).AddTicks(4766), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 13, 11, 51, 53, 72, DateTimeKind.Local).AddTicks(3827),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 13, 8, 51, 53, 72, DateTimeKind.Unspecified).AddTicks(3829), new TimeSpan(0, 0, 0, 0, 0))
                         });
+                });
+
+            modelBuilder.Entity("netpaypro.Data.DataModels.EmployeeDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("BasicPay")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HouseAllowance")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdNo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("LastUpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NhifNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NssfNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PinNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShaNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("EmployeeDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -507,6 +560,17 @@ namespace netpaypro.Data.Migrations
                     b.Navigation("Country");
 
                     b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("netpaypro.Data.DataModels.EmployeeDetail", b =>
+                {
+                    b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Company", b =>
