@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250214083616_UpdatingEmployeeDetailsUpdate")]
+    partial class UpdatingEmployeeDetailsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 14, 12, 39, 9, 600, DateTimeKind.Local).AddTicks(2500),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 39, 9, 600, DateTimeKind.Unspecified).AddTicks(2503), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 14, 11, 36, 15, 268, DateTimeKind.Local).AddTicks(7419),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 8, 36, 15, 268, DateTimeKind.Unspecified).AddTicks(7419), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -410,8 +413,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 14, 12, 39, 9, 600, DateTimeKind.Local).AddTicks(2427),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 39, 9, 600, DateTimeKind.Unspecified).AddTicks(2430), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 14, 11, 36, 15, 268, DateTimeKind.Local).AddTicks(7391),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 8, 36, 15, 268, DateTimeKind.Unspecified).AddTicks(7393), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -422,6 +425,9 @@ namespace netpaypro.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BasicPay")
                         .HasColumnType("int");
@@ -434,12 +440,6 @@ namespace netpaypro.Data.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GrossPay")
-                        .HasColumnType("int");
 
                     b.Property<int>("HouseAllowance")
                         .HasColumnType("int");
@@ -466,109 +466,16 @@ namespace netpaypro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasIndex("CompanyId");
 
                     b.ToTable("EmployeeDetails");
-                });
-
-            modelBuilder.Entity("netpaypro.Data.DataModels.PayrollEntry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AHLRelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BasicPay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("HousingAllowance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HousingLevy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IncomeTax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("LastUpdatedAt")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NSSF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NettPay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherAllowances")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PAYE")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PAYERelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayrollMonth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PayrollYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RBAPension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SHIF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SHIFRelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TotalAdvances")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("PayrollEntries");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -667,36 +574,17 @@ namespace netpaypro.Data.Migrations
 
             modelBuilder.Entity("netpaypro.Data.DataModels.EmployeeDetail", b =>
                 {
+                    b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("netpaypro.Data.DataModels.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Company");
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("netpaypro.Data.DataModels.PayrollEntry", b =>
-                {
-                    b.HasOne("netpaypro.Data.DataModels.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Company", b =>

@@ -2,35 +2,24 @@
 {
     public class PayrollEntry : BaseClass
     {
-        public ApplicationUser? ApplicationUser { get; set; }
-        public string ApplicationUserId { get; set; }
-
+        public ApplicationUser? Employee { get; set; }
+        public string EmployeeId { get; set; }
         public Company? Company { get; set; }
-
         public int CompanyId { get; set; }
-        public string? PINNumber { get; set; }
-        public string? IDNumber { get; set; }
-        public string? NSSFNumber { get; set; }
-        public string? NHIFNumber { get; set; }
-        public string? SHANumber { get; set; }
-        public decimal BasicPay { get; set; }
-        public decimal HousingAllowance { get; set; }
-        public decimal OtherAllowances { get; set; }
-        public decimal GrossPay { get; set; }
-        public decimal IncomeTax { get; set; }
-
-        public decimal PAYERelief { get; set; }
-        public decimal SHIFRelief { get; set; }
-        public decimal AHLRelief { get; set; }
-        public decimal PAYE { get; set; }
-
-        public decimal NSSF { get; set; }
-        public decimal RBAPension { get; set; }
-        public decimal SHIF { get; set; }
-        public decimal HousingLevy { get; set; }
-
-        public decimal TotalAdvances { get; set; }
-        public decimal NettPay { get; set; }
+        public string BasicPay { get; set; }
+        public string HousingAllowance { get; set; }
+        public string OtherAllowances { get; set; }
+        public string IncomeTax { get; set; }
+        public string PAYERelief { get; set; }
+        public string SHIFRelief { get; set; }
+        public string AHLRelief { get; set; }
+        public string PAYE { get; set; }
+        public string NSSF { get; set; }
+        public string RBAPension { get; set; }
+        public string SHIF { get; set; }
+        public string HousingLevy { get; set; }
+        public string TotalAdvances { get; set; }
+        public string NettPay { get; set; }
         public string PayrollMonth { get; set; }
         public int PayrollYear { get; set; }
 

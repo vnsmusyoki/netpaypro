@@ -18,11 +18,11 @@
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" asp-append-version="true" /> 
     <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" asp-append-version="true" /> 
     <link href="~/assets/css/custom.min.css" rel="stylesheet" type="text/css"  asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
 
-    <link rel="stylesheet" href="~/assets/libs/dropzone/dropzone.css" type="text/css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css">
+    
 
 
 </head>
@@ -2370,21 +2370,19 @@
     <script src="~/assets/js/app.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"></script>
-
+     
     <script>
         toastr.options = {
             "closeButton": true,
             "progressBar": true,
                 "positionClass": "toast-top-right",
-            "timeOut": "5000"
+            "timeOut": "4000"
         };
     </script>
     <script>
         $(document).ready(function () {
-            var successMessage = '@TempData["SuccessMessage"]';
-            var errorMessage = '@TempData["ErrorMessage"]';
+            var successMessage = '@TempData["Success"]';
+            var errorMessage = '@TempData["Error"]';
 
             if (successMessage) {
                 toastr.success(successMessage);

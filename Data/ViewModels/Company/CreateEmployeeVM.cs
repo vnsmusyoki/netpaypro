@@ -58,6 +58,7 @@ namespace netpaypro.Data.ViewModels.Company
         [Display(Name = "Basic Employee Pay")]
         public int BasicPay { get; set; } = 0;
 
+
         [Required(ErrorMessage = "Please provide House Allowance else indicate it as 0")]
         [Display(Name = "House Allowance")]
         public int HouseAllowance { get; set; } = 0;

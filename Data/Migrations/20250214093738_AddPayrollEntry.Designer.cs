@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250214093738_AddPayrollEntry")]
+    partial class AddPayrollEntry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 14, 12, 39, 9, 600, DateTimeKind.Local).AddTicks(2500),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 39, 9, 600, DateTimeKind.Unspecified).AddTicks(2503), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 14, 12, 37, 34, 972, DateTimeKind.Local).AddTicks(9941),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 37, 34, 972, DateTimeKind.Unspecified).AddTicks(9947), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -410,8 +413,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 14, 12, 39, 9, 600, DateTimeKind.Local).AddTicks(2427),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 39, 9, 600, DateTimeKind.Unspecified).AddTicks(2430), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 14, 12, 37, 34, 972, DateTimeKind.Local).AddTicks(9608),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 14, 9, 37, 34, 972, DateTimeKind.Unspecified).AddTicks(9613), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -483,13 +486,11 @@ namespace netpaypro.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AHLRelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("AHLRelief")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("BasicPay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("BasicPay")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("int");
@@ -504,40 +505,32 @@ namespace netpaypro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("HousingAllowance")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("HousingAllowance")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("HousingLevy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("HousingLevy")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("IncomeTax")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("IncomeTax")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NSSF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("NSSF")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("NettPay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("NettPay")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("OtherAllowances")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("OtherAllowances")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("PAYE")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("PAYE")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("PAYERelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("PAYERelief")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PayrollMonth")
                         .IsRequired()
@@ -546,21 +539,17 @@ namespace netpaypro.Data.Migrations
                     b.Property<int>("PayrollYear")
                         .HasColumnType("int");
 
-                    b.Property<string>("RBAPension")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("RBAPension")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SHIF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("SHIF")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("SHIFRelief")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("SHIFRelief")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TotalAdvances")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("TotalAdvances")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

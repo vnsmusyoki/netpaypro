@@ -16,6 +16,7 @@ namespace netpaypro.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<EmployeeDetail> EmployeeDetails { get; set; }
+        public DbSet<PayrollEntry> PayrollEntries { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

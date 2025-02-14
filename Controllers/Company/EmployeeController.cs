@@ -65,33 +65,36 @@ namespace netpaypro.Controllers.Company
                 var passwordHasher = new PasswordHasher<ApplicationUser>();
                 employeeData.PasswordHash = passwordHasher.HashPassword(employeeData, createEmployeeVM.Password);
 
+                var GrossPayAmount = createEmployeeVM.BasicPay + createEmployeeVM.HouseAllowance;
                 var employeeDetails = new EmployeeDetail
                 {
-                    ApplicationUserId = employeeData.Id,
+                    EmployeeId = employeeData.Id,
+                    CompanyId = userCompany.Id,
                     PinNo = createEmployeeVM.PinNo,
                     IdNo = createEmployeeVM.IdNo,
                     NssfNo = createEmployeeVM.NssfNo,
                     NhifNo = createEmployeeVM.NhifNo,
                     ShaNo = createEmployeeVM.ShaNo,
                     BasicPay = createEmployeeVM.BasicPay,
-                    HouseAllowance = createEmployeeVM.HouseAllowance
+                    HouseAllowance = createEmployeeVM.HouseAllowance,
+                    GrossPay = GrossPayAmount
                 };
 
                 _context.Users.Add(employeeData);
                 _context.EmployeeDetails.Add(employeeDetails);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Employee added successfully!";
+                TempData["Success"] = "Employee added successfully!";
                 return RedirectToAction("Details", "Company", new { id = userCompany?.Id });
             }
             catch (DbUpdateException dbEx)
             {
-                TempData["ErrorMessage"] = "An error occurred while saving the employee data.";
+                TempData["Error"] = "An error occurred while saving the employee data.";
                 ModelState.AddModelError("", "An error occurred while saving the employee data. Please try again.");
                 _logger.LogError(dbEx, "Database update error occurred in StoreEmployee method.");
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred while saving the employee data.";
+                TempData["Error"] = "An error occurred while saving the employee data.";
                 ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
                 _logger.LogError(ex, "Unexpected error occurred in StoreEmployee method.");
             }
