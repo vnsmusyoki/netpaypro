@@ -50,6 +50,9 @@ namespace netpaypro.Controllers.Company
                 TempData["Error"] = "Invalid file format. Please upload an Excel file.";
                 return RedirectToAction(nameof(Index));
             }
+
+            using var transaction = await _context.Database.BeginTransactionAsync(); // Start transaction
+
             try
             {
                 var expectedHeaders = new List<string>
@@ -58,12 +61,14 @@ namespace netpaypro.Controllers.Company
             "AHL_RELIEF", "PAYE", "NSSF", "RBA_PENSION", "SHIF", "HOUSING_LEVY",
             "TOTAL_ADVANCES", "NET_PAY"
         };
+
                 int currentYear = DateTime.Now.Year;
                 var userId = _userManager.GetUserId(User);
-                var company = await _context.Companies.Where(q => q.ManagerId == userId).FirstOrDefaultAsync();
+                var company = await _context.Companies.FirstOrDefaultAsync(q => q.ManagerId == userId);
+
                 if (company == null)
                 {
-                    throw new Exception("Unable to retrieve the company details. Please contact support for assistance");
+                    throw new Exception("Unable to retrieve the company details. Please contact support.");
                 }
 
                 using (var stream = new MemoryStream())
@@ -71,98 +76,98 @@ namespace netpaypro.Controllers.Company
                     payrollFile.CopyTo(stream);
                     using (var package = new ExcelPackage(stream))
                     {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0]; // First sheet
-
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                         int colCount = worksheet.Dimension.Columns;
+                        int rowCount = worksheet.Dimension.Rows;
 
                         List<string> actualHeaders = new List<string>();
-
                         for (int col = 1; col <= colCount; col++)
                         {
-                            actualHeaders.Add(worksheet.Cells[1, col].Text.Trim()); // Extract headers
+                            actualHeaders.Add(worksheet.Cells[1, col].Text.Trim());
                         }
 
-                        // Validate headers
                         if (!actualHeaders.SequenceEqual(expectedHeaders))
                         {
-                            _logger.LogError("Invalid column headers: {Headers}", string.Join(", ", actualHeaders));
                             throw new Exception("Excel file has invalid column headers.");
                         }
-                        int rowCount = worksheet.Dimension.Rows;
-                        DataTable dt = new DataTable();
-                        for (int col = 1; col <= colCount; col++)
-                        {
-                            dt.Columns.Add(worksheet.Cells[1, col].Text); // Add column names
-                        }
 
+                        List<PayrollEntry> payrollEntries = new List<PayrollEntry>();
 
                         for (int row = 2; row <= rowCount; row++)
                         {
-                            DataRow dr = dt.NewRow();
                             string monthText = worksheet.Cells[row, 1].Text.Trim();
                             string yearText = worksheet.Cells[row, 2].Text.Trim();
                             string idText = worksheet.Cells[row, 3].Text.Trim();
 
-                            // Validate MONTH
                             if (!int.TryParse(monthText, out int month) || month < 1 || month > 12)
                             {
-                                _logger.LogError("Invalid MONTH value at row {Row}: {Value}", row, monthText);
-                                throw new Exception($"Invalid MONTH value at row {row}: {monthText}");
+                                throw new Exception($"Invalid MONTH at row {row}: {monthText}");
                             }
 
-                            // Validate YEAR
                             if (!int.TryParse(yearText, out int year) || year > currentYear)
                             {
-                                _logger.LogError("Invalid YEAR value at row {Row}: {Value}", row, yearText);
-                                throw new Exception($"Invalid YEAR value at row {row}: {yearText}");
+                                throw new Exception($"Invalid YEAR at row {row}: {yearText}");
                             }
-                            // Validate IDNO (Must be a valid number and exist in the database)
+
                             if (!long.TryParse(idText, out long IdNumber))
                             {
-                                _logger.LogError("Invalid IDNO format at row {Row}: {Value}", row, idText);
-                                throw new Exception($"Invalid IDNO format at row {row}: {idText}");
+                                throw new Exception($"Invalid IDNO at row {row}: {idText}");
                             }
 
-                            // Check if IDNO exists in the employees table for the given company
                             if (!await CheckIDExists(IdNumber, company))
                             {
-                                _logger.LogInformation("Employee idno {id} at row {row} does not exist in company {companyid}", IdNumber, row, company.Id);
                                 throw new Exception($"Employee with ID NO {IdNumber} at row {row} does not exist in company {company.CompanyName}");
                             }
-
 
                             var EmployeeId = await EmployeeProfile(IdNumber, company) ?? "";
 
                             if (await EmployeeAlreadyexists(monthText, yearText, EmployeeId, company))
                             {
-                                _logger.LogInformation("You already have an existing payroll entry for the employee {IdNumber} for the {monthText} - {yearText}", IdNumber, monthText, yearText);
-                                throw new Exception($"You already have an existing payroll entry for the employee {IdNumber} for the {monthText} - {yearText}");
-
+                                throw new Exception($"A payroll entry already exists for employee {IdNumber} for {monthText}-{yearText}.");
                             }
 
-
-                            for (int col = 1; col <= colCount; col++)
+                            PayrollEntry payrollEntry = new PayrollEntry
                             {
-                                dr[col - 1] = worksheet.Cells[row, col].Text;
-                            }
-                            dt.Rows.Add(dr);
-                            _logger.LogInformation("Row {Row}: {Data}", row - 1, dr);
-                            _logger.LogInformation("Row {Row}: {Data}", row - 1, string.Join(", ", dr.ItemArray));
+                                EmployeeId = EmployeeId,
+                                CompanyId = company.Id,
+                                PayrollMonth = month,
+                                PayrollYear = year,
+                                IncomeTax = worksheet.Cells[row, 4].Text.Trim(),
+                                PAYERelief = worksheet.Cells[row, 5].Text.Trim(),
+                                SHIFRelief = worksheet.Cells[row, 6].Text.Trim(),
+                                AHLRelief = worksheet.Cells[row, 7].Text.Trim(),
+                                PAYE = worksheet.Cells[row, 8].Text.Trim(),
+                                NSSF = worksheet.Cells[row, 9].Text.Trim(),
+                                RBAPension = worksheet.Cells[row, 10].Text.Trim(),
+                                SHIF = worksheet.Cells[row, 11].Text.Trim(),
+                                HousingLevy = worksheet.Cells[row, 12].Text.Trim(),
+                                TotalAdvances = worksheet.Cells[row, 13].Text.Trim(),
+                                NettPay = worksheet.Cells[row, 14].Text.Trim(),
+                                BasicPay = worksheet.Cells[row, 14].Text.Trim(),
+                                HousingAllowance = worksheet.Cells[row, 12].Text.Trim(),
+                                OtherAllowances = "0"
+                            };
+
+                            payrollEntries.Add(payrollEntry);
                         }
 
+                        await _context.PayrollEntries.AddRangeAsync(payrollEntries);
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync(); // Commit only if all rows are valid
 
+                        TempData["Success"] = "Payroll file uploaded successfully!";
                     }
                 }
-
-                TempData["Success"] = "Payroll file uploaded successfully!";
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync(); // Rollback in case of any error
                 TempData["Error"] = "Error processing file: " + ex.Message;
             }
 
             return RedirectToAction("Index");
         }
+
 
         private async Task<bool> CheckIDExists(long IdNumber, netpaypro.Data.DataModels.Company company)
         {
@@ -178,7 +183,8 @@ namespace netpaypro.Controllers.Company
         private async Task<bool> EmployeeAlreadyexists(string Month, string Year, string EmployeeId, netpaypro.Data.DataModels.Company company)
         {
 
-            return await _context.PayrollEntries.AnyAsync(q => q.PayrollMonth == Month && q.PayrollYear == int.Parse(Year) && q.EmployeeId == EmployeeId && q.CompanyId == company.Id);
+            int parsedMonth = int.Parse(Month);
+            return await _context.PayrollEntries.AnyAsync(q => q.PayrollMonth == parsedMonth && q.PayrollYear == int.Parse(Year) && q.EmployeeId == EmployeeId && q.CompanyId == company.Id);
         }
     }
 }

@@ -20,7 +20,7 @@
         public string HousingLevy { get; set; }
         public string TotalAdvances { get; set; }
         public string NettPay { get; set; }
-        public string PayrollMonth { get; set; }
+        public int PayrollMonth { get; set; }
         public int PayrollYear { get; set; }
 
     }
