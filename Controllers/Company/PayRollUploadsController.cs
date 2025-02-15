@@ -2,8 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using netpaypro.Data;
+using netpaypro.Data.ViewModels.Company;
+using Newtonsoft.Json;
+using NuGet.Protocol;
 using OfficeOpenXml;
 using System.Data;
+using System.Transactions;
 
 namespace netpaypro.Controllers.Company
 {
@@ -19,11 +23,41 @@ namespace netpaypro.Controllers.Company
             _context = context;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var userId = _userManager.GetUserId(User);
 
-            return View("~/Views/Company/Payroll/AllPayrolls.cshtml");
+            var company = await _context.Companies
+                .Include(q => q.Manager)
+                .FirstOrDefaultAsync(q => q.ManagerId == userId);
+
+
+            List<PayrollSummaryViewVM> PayrollEntries = new List<PayrollSummaryViewVM>();
+
+            if (company != null)
+            {
+
+                PayrollEntries = await _context.PayRollEntriesSummaries
+                    .Where(q => q.CompanyId == company.Id)
+                    .Select(q => new PayrollSummaryViewVM
+                    {
+                        Id = q.Id,
+                        EntriesCount = q.RecordsCount,
+                        UploadedAt = q.CreatedAt,
+                        SubmittedAt = q.SubmitedAt,
+                        SubmittedBy = q.SubmittedBy.FullName,
+                        PayrollMonth = (int)q.PayrollMonth,
+                        PayrollYear = (int)q.PayrollYear,
+                        IsSubmitted = q.IsSubmitted,
+                        UploadedBy = q.User.FullName,
+                        IsProcessedSuccessfully = q.IsProcessedSuccessfully
+                    })
+                    .ToListAsync();
+            }
+
+            return View("~/Views/Company/Payroll/AllPayrolls.cshtml", PayrollEntries);
         }
+
 
         public IActionResult DownloadTemplate()
         {
@@ -38,8 +72,7 @@ namespace netpaypro.Controllers.Company
         {
             if (payrollFile == null || payrollFile.Length == 0)
             {
-                TempData["Error"] = "Please select a valid Excel file.";
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Please select a valid Excel file.");
             }
 
             var allowedExtensions = new[] { ".xls", ".xlsx" };
@@ -47,20 +80,15 @@ namespace netpaypro.Controllers.Company
 
             if (!allowedExtensions.Contains(extension))
             {
-                TempData["Error"] = "Invalid file format. Please upload an Excel file.";
-                return RedirectToAction(nameof(Index));
+                return BadRequest("Invalid file format. Please upload an Excel file.");
             }
 
-            using var transaction = await _context.Database.BeginTransactionAsync(); // Start transaction
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
-                var expectedHeaders = new List<string>
-        {
-            "MONTH", "YEAR", "IDNO", "INCOME_TAX", "PAYE_RELIEF_INCOME_TAX", "SHIF_RELIEF",
-            "AHL_RELIEF", "PAYE", "NSSF", "RBA_PENSION", "SHIF", "HOUSING_LEVY",
-            "TOTAL_ADVANCES", "NET_PAY"
-        };
+                var expectedHeaders = new List<string> { "MONTH", "YEAR", "IDNO", "INCOME_TAX", "PAYE_RELIEF_INCOME_TAX", "SHIF_RELIEF",
+                    "AHL_RELIEF", "PAYE", "NSSF", "RBA_PENSION", "SHIF", "HOUSING_LEVY","TOTAL_ADVANCES", "NET_PAY"};
 
                 int currentYear = DateTime.Now.Year;
                 var userId = _userManager.GetUserId(User);
@@ -90,6 +118,32 @@ namespace netpaypro.Controllers.Company
                         {
                             throw new Exception("Excel file has invalid column headers.");
                         }
+                        string payrollMonthText = worksheet.Cells[2, 1].Text.Trim();
+                        string payrollYearText = worksheet.Cells[2, 2].Text.Trim();
+
+                        if (!int.TryParse(payrollMonthText, out int payrollMonth) || payrollMonth < 1 || payrollMonth > 12)
+                        {
+                            throw new Exception($"Invalid MONTH at row 2: {payrollMonthText}");
+                        }
+
+                        if (!int.TryParse(payrollYearText, out int payrollYear) || payrollYear > currentYear)
+                        {
+                            throw new Exception($"Invalid YEAR at row 2: {payrollYearText}");
+                        }
+                        var payrollSummary = new PayRollEntriesSummary
+                        {
+                            RecordsCount = 0,
+                            UserId = userId,
+                            CompanyId = company.Id,
+                            PayrollMonth = payrollMonth,
+                            PayrollYear = int.Parse(payrollYearText),
+                            SubmitedAt = DateTime.Now,
+                            SubmittedByUserId = userId,
+                        };
+                        _context.PayRollEntriesSummaries.Add(payrollSummary);
+                        await _context.SaveChangesAsync();
+                        int payrollSummaryId = payrollSummary.Id;
+
 
                         List<PayrollEntry> payrollEntries = new List<PayrollEntry>();
 
@@ -145,29 +199,67 @@ namespace netpaypro.Controllers.Company
                                 NettPay = worksheet.Cells[row, 14].Text.Trim(),
                                 BasicPay = worksheet.Cells[row, 14].Text.Trim(),
                                 HousingAllowance = worksheet.Cells[row, 12].Text.Trim(),
-                                OtherAllowances = "0"
+                                OtherAllowances = "0",
+                                IsProcessed = false,
+                                PayrollEntriesSummaryId = payrollSummaryId
                             };
 
                             payrollEntries.Add(payrollEntry);
                         }
 
-                        await _context.PayrollEntries.AddRangeAsync(payrollEntries);
+                        _context.PayrollEntries.AddRange(payrollEntries);
                         await _context.SaveChangesAsync();
-                        await transaction.CommitAsync(); // Commit only if all rows are valid
 
-                        TempData["Success"] = "Payroll file uploaded successfully!";
+                        payrollSummary.RecordsCount = payrollEntries.Count;
+                        payrollSummary.PayrollEntries = payrollEntries;
+
+                        await _context.SaveChangesAsync();
+                        await transaction.CommitAsync();
+
+                        return Json(new { success = true, message = "Payroll file uploaded successfully!" });
                     }
                 }
             }
             catch (Exception ex)
             {
-                await transaction.RollbackAsync(); // Rollback in case of any error
-                TempData["Error"] = "Error processing file: " + ex.Message;
+                await transaction.RollbackAsync();
+                return BadRequest("Error processing file: " + ex.Message);
             }
-
-            return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SubmitPayroll(int id)
+        {
+            var now = DateTime.UtcNow;
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var userId = _userManager.GetUserId(User);
+                await _context.PayRollEntriesSummaries
+                    .Where(q => q.Id == id && !q.IsSubmitted)
+                    .ExecuteUpdateAsync(s => s
+                        .SetProperty(q => q.IsProcessedSuccessfully, true)
+                        .SetProperty(q => q.IsSubmitted, true)
+                        .SetProperty(q => q.SubmitedAt, now)
+                        .SetProperty(q => q.SubmittedByUserId, userId)
+                    );
+
+
+                await _context.PayrollEntries.Where(e => e.PayrollEntriesSummaryId == id).ExecuteUpdateAsync(s => s.SetProperty(e => e.IsProcessed, true));
+
+                await transaction.CommitAsync();
+
+                return Json(new { success = true, message = "Payroll submitted successfully." });
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error submitting payroll");
+                return Json(new { success = false, message = "Payroll submission failed. " + ex.Message });
+            }
+        }
 
         private async Task<bool> CheckIDExists(long IdNumber, netpaypro.Data.DataModels.Company company)
         {

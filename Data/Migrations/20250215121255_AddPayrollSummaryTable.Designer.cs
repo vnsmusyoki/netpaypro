@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250215121255_AddPayrollSummaryTable")]
+    partial class AddPayrollSummaryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 15, 17, 58, 31, 857, DateTimeKind.Local).AddTicks(8500),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 58, 31, 857, DateTimeKind.Unspecified).AddTicks(8502), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 15, 15, 12, 54, 489, DateTimeKind.Local).AddTicks(9712),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 12, 12, 54, 489, DateTimeKind.Unspecified).AddTicks(9713), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -410,8 +413,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 15, 17, 58, 31, 857, DateTimeKind.Local).AddTicks(8374),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 58, 31, 857, DateTimeKind.Unspecified).AddTicks(8377), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 15, 15, 12, 54, 489, DateTimeKind.Local).AddTicks(9688),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 12, 12, 54, 489, DateTimeKind.Unspecified).AddTicks(9689), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -498,29 +501,14 @@ namespace netpaypro.Data.Migrations
                     b.Property<bool>("IsProcessedSuccessfully")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsSubmitted")
+                    b.Property<bool>("IsSubmited")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("PayrollMonth")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PayrollYear")
-                        .HasColumnType("int");
-
                     b.Property<int>("RecordsCount")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("SubmitedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SubmittedById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SubmittedByUserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -530,11 +518,9 @@ namespace netpaypro.Data.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("SubmittedById");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("PayRollEntriesSummaries");
+                    b.ToTable("payRollEntriesSummaries");
                 });
 
             modelBuilder.Entity("netpaypro.Data.DataModels.PayrollEntry", b =>
@@ -757,10 +743,6 @@ namespace netpaypro.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "SubmittedBy")
-                        .WithMany()
-                        .HasForeignKey("SubmittedById");
-
                     b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -768,8 +750,6 @@ namespace netpaypro.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-
-                    b.Navigation("SubmittedBy");
 
                     b.Navigation("User");
                 });

@@ -23,5 +23,10 @@
         public int PayrollMonth { get; set; }
         public int PayrollYear { get; set; }
 
+        public bool IsProcessed { get; set; }
+        public PayRollEntriesSummary PayRollEntriesSummary { get; set; }
+
+        public int? PayrollEntriesSummaryId { get; set; }
+
     }
 }

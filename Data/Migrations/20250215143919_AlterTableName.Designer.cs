@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250215143919_AlterTableName")]
+    partial class AlterTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 15, 17, 58, 31, 857, DateTimeKind.Local).AddTicks(8500),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 58, 31, 857, DateTimeKind.Unspecified).AddTicks(8502), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 15, 17, 39, 15, 600, DateTimeKind.Local).AddTicks(2267),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 39, 15, 600, DateTimeKind.Unspecified).AddTicks(2272), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -410,8 +413,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 15, 17, 58, 31, 857, DateTimeKind.Local).AddTicks(8374),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 58, 31, 857, DateTimeKind.Unspecified).AddTicks(8377), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 15, 17, 39, 15, 600, DateTimeKind.Local).AddTicks(1996),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 15, 14, 39, 15, 600, DateTimeKind.Unspecified).AddTicks(2002), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
