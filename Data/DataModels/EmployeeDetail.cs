@@ -21,5 +21,9 @@
         public int GrossPay { get; set; } = 0;
 
         public int HouseAllowance { get; set; } = 0;
+
+        public string Gender { get; set; }
+
+        public string Designation { get; set; }
     }
 }

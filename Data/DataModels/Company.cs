@@ -1,4 +1,6 @@
-﻿namespace netpaypro.Data.DataModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace netpaypro.Data.DataModels
 {
     public class Company : BaseClass
     {
@@ -26,5 +28,10 @@
 
         public ApplicationUser Manager { get; set; }
         public string? ManagerId { get; set; }
+        public string Description { get; set; }
+        public string BusinessType { get; set; }
+        public string IndustryType { get; set; }
+        public string WorkingHours { get; set; }
+        public string Website { get; set; }
     }
 }

@@ -3,6 +3,9 @@
     ViewData["Title"] = "Add New Company";
     var cities = ViewBag.Cities as List<City>;
     var countries = ViewBag.Countries as List<Country>;
+    var businessTypes = new List<string> { "Sole Proprietorship", "Partnership", "Corporation", "Limited Liability Company (LLC)" };
+    var industries = new List<string> { "Technology", "Finance", "Healthcare", "Retail", "Manufacturing", "Education", "Other" };
+
 }
 <div class="row">
     <div class="col-xxl-12">
@@ -25,6 +28,32 @@
                                 <label asp-for="RegistrationNumber" class="form-label"></label>
                                 <input asp-for="RegistrationNumber" class="form-control" placeholder="Enter registration number">
                                 <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="BusinessType" class="form-label">Business Type</label>
+                                <select asp-for="BusinessType" class="form-select">
+                                    <option value="">Choose Business Type...</option>
+                                    @foreach (var type in businessTypes)
+                                    {
+                                        <option value="@type">@type</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="BusinessType" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="IndustryType" class="form-label">Industry Type</label>
+                                <select asp-for="IndustryType" class="form-select">
+                                    <option value="">Choose Industry...</option>
+                                    @foreach (var industry in industries)
+                                    {
+                                        <option value="@industry">@industry</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="IndustryType" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -88,18 +117,26 @@
                                 <span asp-validation-for="Currency" class="text-danger"></span>
                             </div>
                         </div>
+                        
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="PaymentMethod" class="form-label"></label>
-                                <input asp-for="PaymentMethod" class="form-control" placeholder="Enter payment method">
-                                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                <label asp-for="WorkingHours" class="form-label">Working Hours</label>
+                                <input asp-for="WorkingHours" class="form-control" placeholder="e.g., Mon-Fri 9AM-5PM">
+                                <span asp-validation-for="WorkingHours" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="TaxRate" class="form-label"></label>
-                                <input asp-for="TaxRate" type="number" class="form-control" placeholder="Enter tax rate" step="0.01">
-                                <span asp-validation-for="TaxRate" class="text-danger"></span>
+                                <label asp-for="Website" class="form-label">Company Website</label>
+                                <input asp-for="Website" type="url" class="form-control" placeholder="https://example.com">
+                                <span asp-validation-for="Website" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label">Company Description</label>
+                                <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
                         </div>
                          
@@ -115,23 +152,17 @@
     </div>
 </div>
 @section Scripts {
+  
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+          
+           
+        <script>
+            ClassicEditor
+            .create(document.querySelector('#Description'))
+                    .catch(error => {
+                console.error(error);
+                    });
+    </script>
     <partial name="_ValidationScriptsPartial" />
-
-}
-<script>
-    $(document).ready(function () {
-    @if (TempData["Success"] != null)
-    {
-        <text>
-                    toastr.success('@TempData["Success"]');
-        </text>
     }
-
-    @if (TempData["Error"] != null)
-    {
-        <text>
-                    toastr.error('@TempData["Error"]');
-        </text>
-    }
-        });
-</script>
+ 

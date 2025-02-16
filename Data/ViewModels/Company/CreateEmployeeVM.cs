@@ -62,6 +62,10 @@ namespace netpaypro.Data.ViewModels.Company
         [Required(ErrorMessage = "Please provide House Allowance else indicate it as 0")]
         [Display(Name = "House Allowance")]
         public int HouseAllowance { get; set; } = 0;
+
+        public string Gender { get; set; }
+
+        public string Designation { get; set; }
     }
 
 }

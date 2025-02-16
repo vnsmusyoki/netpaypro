@@ -1,7 +1,26 @@
 ﻿@model CreateEmployeeVM;
 @{
     ViewData["Title"] = "Add New Employee";
+
+    var GenderList = new List<string> {"Male", "Female"};
+
+    var DesignationList = new List<string>{"Chief Executive Officer (CEO)","Chief Operations Officer (COO)","Chief Financial Officer (CFO)","Chief Technology Officer (CTO)",
+    "Chief Marketing Officer (CMO)","General Manager","Operations Manager","Finance Manager","Human Resources Manager","IT Manager","Marketing Manager",
+    "Sales Manager","Product Manager","Business Analyst","Software Engineer","Network Administrator","Database Administrator","HR Executive","Accountant",
+    "Sales Executive","Marketing Executive","Customer Support Representative","Administrative Assistant","Receptionist","Office Clerk","Intern"
+};
+
 }
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .custom-dropdown {
+            border: 1px solid #007bff;
+            border-radius: 5px;
+        }
+    </style>
+}
+
 <!-- start page title -->
 <div class="row">
     <div class="col-12">
@@ -104,23 +123,49 @@
                             <span class="text-danger" asp-validation-for="IsActive"></span>
 
                         </div>
+              
                 <div class="mb-3 col-md-4">
 
-                    <label class="form-label" for="project-title-input" asp-for="Password"></label>
-                    <input type="text" asp-for="Password" class="form-control" id="project-title-input" placeholder="">
-                    <span class="text-danger" asp-validation-for="Password"></span>
+                    <label class="form-label"  asp-for="Gender"></label>
+                       <select class="form-control" asp-for="Gender">
+                            <option value="">Click to select</option>
+                                @foreach(var type in @GenderList)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                     <span class="text-danger" asp-validation-for="Gender"></span>
 
                 </div>
                 <div class="mb-3 col-md-4">
 
-                    <label class="form-label" for="project-title-input" asp-for="ConfirmPassword"></label>
-                    <input type="text" asp-for="ConfirmPassword" class="form-control" id="project-title-input" placeholder="">
-                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    <label class="form-label"  asp-for="Designation"></label>
+                       <select class="form-control select2" asp-for="Designation">
+                            <option value="">Click to select</option>
+                                @foreach(var type in DesignationList)
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                     <span class="text-danger" asp-validation-for="Designation"></span>
 
                 </div>
+                        <div class="mb-3 col-md-4">
+
+                            <label class="form-label" for="project-title-input" asp-for="Password"></label>
+                            <input type="text" asp-for="Password" class="form-control" id="project-title-input" placeholder="">
+                            <span class="text-danger" asp-validation-for="Password"></span>
+
+                        </div>
+                        <div class="mb-3 col-md-4">
+
+                            <label class="form-label" for="project-title-input" asp-for="ConfirmPassword"></label>
+                            <input type="text" asp-for="ConfirmPassword" class="form-control" id="project-title-input" placeholder="">
+                            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+
+                        </div>
                    
-                    <div class="mb-3">
-                          <!-- end card -->
+                    <div class="mb-3"> 
                        <div class="text-end"> 
                            <button type="submit" class="btn btn-success w-sm">Create</button>
                        </div>
@@ -128,12 +173,19 @@
             </div>
             </form>
 
-            </div>
-            <!-- end card body -->
-        </div>
-        <!-- end card -->      
+            </div> 
+        </div>  
     </div>  
     @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
         <partial name="_ValidationScriptsPartial" />
+        <script>
+            $('.select2').select2({
+                placeholder: "Click to select",
+                allowClear: true,
+                width: '100%',
+                height: '48px'
+            });
+        </script>
 
     }

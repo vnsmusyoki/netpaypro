@@ -31,5 +31,18 @@ namespace netpaypro.Data.ViewModels.Company
         public DateTime? CreatedAt { get; set; }
 
         public int Id { get; set; }
+        public string? Description { get; set; }
+        public string? BusinessType { get; set; }
+        public string? IndustryType { get; set; }
+        public string? WorkingHours { get; set; }
+        public string? Website { get; set; }
+
+        public string? Designation { get; set; }
+        public string? Gender { get; set; }
+        public Dictionary<string, int>? SalaryDistribution { get; set; }
+
+        public Dictionary<string, int>? GenderDistribution { get; set; }
+
+        public Dictionary<string, int>? DesignationDistribution { get; set; }
     }
 }

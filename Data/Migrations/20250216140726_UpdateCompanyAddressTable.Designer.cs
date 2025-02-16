@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250216140726_UpdateCompanyAddressTable")]
+    partial class UpdateCompanyAddressTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,8 +303,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 16, 18, 35, 36, 251, DateTimeKind.Local).AddTicks(8876),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 16, 15, 35, 36, 251, DateTimeKind.Unspecified).AddTicks(8877), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 16, 17, 7, 25, 199, DateTimeKind.Local).AddTicks(1935),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 16, 14, 7, 25, 199, DateTimeKind.Unspecified).AddTicks(1936), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -430,8 +433,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 16, 18, 35, 36, 251, DateTimeKind.Local).AddTicks(8843),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 16, 15, 35, 36, 251, DateTimeKind.Unspecified).AddTicks(8844), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 16, 17, 7, 25, 199, DateTimeKind.Local).AddTicks(1910),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 16, 14, 7, 25, 199, DateTimeKind.Unspecified).AddTicks(1911), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -455,16 +458,8 @@ namespace netpaypro.Data.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GrossPay")
                         .HasColumnType("int");

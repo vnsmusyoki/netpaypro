@@ -77,7 +77,9 @@ namespace netpaypro.Controllers.Company
                     ShaNo = createEmployeeVM.ShaNo,
                     BasicPay = createEmployeeVM.BasicPay,
                     HouseAllowance = createEmployeeVM.HouseAllowance,
-                    GrossPay = GrossPayAmount
+                    GrossPay = GrossPayAmount,
+                    Gender = createEmployeeVM.Gender,
+                    Designation = createEmployeeVM.Designation,
                 };
 
                 _context.Users.Add(employeeData);

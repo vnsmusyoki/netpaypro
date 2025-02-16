@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using netpaypro.Data;
 using netpaypro.Data.ViewModels.Company;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
@@ -14,10 +15,12 @@ namespace netpaypro.Controllers.Company
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public CompanyController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly ILogger<CompanyController> _logger;
+        public CompanyController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<CompanyController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
         }
         public async Task<IActionResult> AllCompanies()
         {
@@ -40,6 +43,8 @@ namespace netpaypro.Controllers.Company
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCompany(CreateCompanyVM createCompanyVM)
         {
+            _logger.LogInformation("******************************************************");
+            JsonConvert.SerializeObject(createCompanyVM, Formatting.Indented);
             var userId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
@@ -54,29 +59,23 @@ namespace netpaypro.Controllers.Company
                         // Define upload directory
                         var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "logos");
 
-                        // Ensure the folder exists
                         if (!Directory.Exists(uploadsFolder))
                         {
                             Directory.CreateDirectory(uploadsFolder);
                         }
 
-                        // Generate a unique filename
                         var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(createCompanyVM.Logo.FileName);
 
-                        // Full server path
                         var fullLogoPath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                        // Save the file to the server
                         using (var stream = new FileStream(fullLogoPath, FileMode.Create))
                         {
                             await createCompanyVM.Logo.CopyToAsync(stream);
                         }
 
-                        // Store the relative path for the database
                         logoPath = Path.Combine("uploads", "logos", uniqueFileName).Replace("\\", "/");
                     }
 
-                    // Create a new company entity
                     var companyProfile = new netpaypro.Data.DataModels.Company
                     {
                         CompanyName = createCompanyVM.CompanyName,
@@ -87,11 +86,14 @@ namespace netpaypro.Controllers.Company
                         CityId = createCompanyVM.CityId,
                         CountryId = createCompanyVM.CountryId,
                         Currency = createCompanyVM.Currency,
-                        PaymentMethod = createCompanyVM.PaymentMethod,
-                        TaxRate = createCompanyVM.TaxRate,
                         ManagerId = userId,
                         CreatedAt = DateTime.Now,
-                        Logo = logoPath, // Save relative path to DB
+                        Logo = logoPath,
+                        Description = createCompanyVM.Description,
+                        BusinessType = createCompanyVM.BusinessType,
+                        IndustryType = createCompanyVM.IndustryType,
+                        WorkingHours = createCompanyVM.WorkingHours,
+                        Website = createCompanyVM.Website,
                     };
 
                     // Save the company
@@ -126,6 +128,48 @@ namespace netpaypro.Controllers.Company
             {
                 return RedirectToAction(nameof(AllCompanies));
             }
+            var salaryDistribution = await _context.EmployeeDetails
+     .Where(e => e.CompanyId == Id)
+     .GroupBy(e =>
+         e.BasicPay <= 30000 ? "0-30K" :
+         e.BasicPay <= 60000 ? "30K-60K" :
+         e.BasicPay <= 90000 ? "60K-90K" :
+         e.BasicPay <= 120000 ? "90K-120K" :
+         e.BasicPay <= 150000 ? "120K-150K" :
+         e.BasicPay <= 180000 ? "150K-180K" :
+         e.BasicPay <= 210000 ? "180K-210K" :
+         e.BasicPay <= 240000 ? "210K-240K" :
+         e.BasicPay <= 270000 ? "240K-270K" :
+         e.BasicPay <= 300000 ? "270K-300K" :
+         e.BasicPay <= 330000 ? "300K-330K" :
+         e.BasicPay <= 360000 ? "330K-360K" :
+         e.BasicPay <= 390000 ? "360K-390K" :
+         e.BasicPay <= 420000 ? "390K-420K" :
+         e.BasicPay <= 450000 ? "420K-450K" :
+         e.BasicPay <= 480000 ? "450K-480K" :
+         "Above 480K"
+     )
+     .Select(g => new
+     {
+         SalaryRange = g.Key,
+         EmployeeCount = g.Count()
+     })
+     .ToListAsync();
+
+            var employees = await _context.EmployeeDetails
+        .Where(e => e.CompanyId == Id)
+        .ToListAsync();
+
+            var genderDistribution = employees
+                .GroupBy(e => e.Gender)
+                .Select(g => new { GenderName = g.Key, GenderCount = g.Count() })
+                .ToDictionary(g => g.GenderName, g => g.GenderCount);
+
+            var designationDistribution = employees
+                .GroupBy(e => e.Designation)
+                .Select(g => new { DesignationName = g.Key, DesignationCount = g.Count() })
+                .ToDictionary(g => g.DesignationName, g => g.DesignationCount);
+
             var viewDetails = new ViewCompanyVM
             {
                 CompanyName = companyDetails.CompanyName,
@@ -145,6 +189,15 @@ namespace netpaypro.Controllers.Company
                 CreatedAt = companyDetails.CreatedAt,
                 LastUpdatedAt = companyDetails.LastUpdatedAt,
                 Id = companyDetails.Id,
+                Description = companyDetails.Description,
+                BusinessType = companyDetails.BusinessType,
+                IndustryType = companyDetails.IndustryType,
+                WorkingHours = companyDetails.WorkingHours,
+                Website = companyDetails.Website,
+                SalaryDistribution = salaryDistribution.ToDictionary(s => s.SalaryRange, s => s.EmployeeCount),
+                GenderDistribution = genderDistribution,
+                DesignationDistribution = designationDistribution
+
             };
 
             return View("~/Views/Company/CompanyDetails.cshtml", viewDetails);
