@@ -10,7 +10,11 @@
     <meta content="" name="description" />
     <meta content="Evans Kimeu" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
+    <link rel="manifest" href="~/site.webmanifest">
 
     <!--Swiper slider css-->
     <link href="~/assets/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" asp-append-version="true" />
@@ -34,9 +38,9 @@
     <div class="layout-wrapper landing">
         <nav class="navbar navbar-expand-lg navbar-landing fixed-top" id="navbar">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
-                    <img src="assets/images/logo-dark.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
-                    <img src="assets/images/logo-light.png" class="card-logo card-logo-light" alt="logo light" height="17">
+                <a class="navbar-brand" href="">
+                    <img src="~/logo.png" class="card-logo card-logo-dark" alt="logo dark" height="17">
+                    <img src="~/logo.png" class="card-logo card-logo-light" alt="logo light" height="17">
                 </a>
                 <button class="navbar-toggler py-0 fs-20 text-body" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="mdi mdi-menu"></i>
@@ -45,27 +49,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mt-2 mt-lg-0" id="navbar-example">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#hero">Home</a>
+                            <a class="nav-link active" href="#hero">NetPayPro</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#services">Services</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#features">Features</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#plans">Plans</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#reviews">Reviews</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#team">Team</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
-                        </li>
-                    </ul>
+                        </ul>
 
                     <div class="">
                         <partial name="_ELoginPartial" />
@@ -81,64 +67,14 @@
         <!-- Start footer -->
         <footer class="custom-footer bg-dark py-5 position-relative">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 mt-4">
-                        <div>
-                            <div>
-                                <img src="assets/images/logo-light.png" alt="logo light" height="17">
-                            </div>
-                            <div class="mt-4 fs-13">
-                                <p>Premium Multipurpose Admin & Dashboard Template</p>
-                                <p class="ff-secondary">You can build any type of web application like eCommerce, CRM, CMS, Project management apps, Admin Panels, etc using Velzon.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-7 ms-lg-auto">
-                        <div class="row">
-                            <div class="col-sm-4 mt-4">
-                                <h5 class="text-white mb-0">Company</h5>
-                                <div class="text-muted mt-3">
-                                    <ul class="list-unstyled ff-secondary footer-list">
-                                        <li><a href="pages-profile.html">About Us</a></li>
-                                        <li><a href="pages-gallery.html">Gallery</a></li>
-                                        <li><a href="apps-projects-overview.html">Projects</a></li>
-                                        <li><a href="pages-timeline.html">Timeline</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 mt-4">
-                                <h5 class="text-white mb-0">Apps Pages</h5>
-                                <div class="text-muted mt-3">
-                                    <ul class="list-unstyled ff-secondary footer-list">
-                                        <li><a href="pages-pricing.html">Calendar</a></li>
-                                        <li><a href="apps-mailbox.html">Mailbox</a></li>
-                                        <li><a href="apps-chat.html">Chat</a></li>
-                                        <li><a href="apps-crm-deals.html">Deals</a></li>
-                                        <li><a href="apps-tasks-kanban.html">Kanban Board</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 mt-4">
-                                <h5 class="text-white mb-0">Support</h5>
-                                <div class="text-muted mt-3">
-                                    <ul class="list-unstyled ff-secondary footer-list">
-                                        <li><a href="pages-faqs.html">FAQ</a></li>
-                                        <li><a href="pages-faqs.html">Contact</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+               
 
                 <div class="row text-center text-sm-start align-items-center mt-5">
                     <div class="col-sm-6">
 
                         <div>
                             <p class="copy-rights mb-0">
-                                <script> document.write(new Date().getFullYear()) </script> © 
+                                <script>document.write(new Date().getFullYear())</script> ©  <img src="~/logo.png" alt="logo light" height="17">
                             </p>
                         </div>
                     </div>
