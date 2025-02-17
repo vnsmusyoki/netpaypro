@@ -19,6 +19,9 @@ namespace netpaypro.Data
         public DbSet<PayRollEntriesSummary> PayRollEntriesSummaries { get; set; }
         public DbSet<PayrollEntry> PayrollEntries { get; set; }
 
+        public DbSet<Bank> Banks { get; set; }
+
+        public DbSet<BankBranch> BankBranches { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

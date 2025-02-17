@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217111931_AddbankAndBankBranches")]
+    partial class AddbankAndBankBranches
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,8 +367,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 27, 43, 133, DateTimeKind.Local).AddTicks(5198),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 27, 43, 133, DateTimeKind.Unspecified).AddTicks(5199), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 17, 14, 19, 27, 554, DateTimeKind.Local).AddTicks(2543),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 19, 27, 554, DateTimeKind.Unspecified).AddTicks(2546), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -494,8 +497,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 27, 43, 133, DateTimeKind.Local).AddTicks(5116),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 27, 43, 133, DateTimeKind.Unspecified).AddTicks(5118), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 17, 14, 19, 27, 554, DateTimeKind.Local).AddTicks(2299),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 19, 27, 554, DateTimeKind.Unspecified).AddTicks(2302), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -810,7 +813,7 @@ namespace netpaypro.Data.Migrations
             modelBuilder.Entity("netpaypro.Data.DataModels.BankBranch", b =>
                 {
                     b.HasOne("netpaypro.Data.DataModels.Bank", "Bank")
-                        .WithMany("BankBranchesList")
+                        .WithMany("BankBranches")
                         .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -934,7 +937,7 @@ namespace netpaypro.Data.Migrations
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Bank", b =>
                 {
-                    b.Navigation("BankBranchesList");
+                    b.Navigation("BankBranches");
                 });
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Company", b =>
