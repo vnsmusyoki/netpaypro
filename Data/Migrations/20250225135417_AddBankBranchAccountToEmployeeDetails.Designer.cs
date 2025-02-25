@@ -12,8 +12,8 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250217111931_AddbankAndBankBranches")]
-    partial class AddbankAndBankBranches
+    [Migration("20250225135417_AddBankBranchAccountToEmployeeDetails")]
+    partial class AddBankBranchAccountToEmployeeDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -292,7 +292,6 @@ namespace netpaypro.Data.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("SwiftCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -312,6 +311,10 @@ namespace netpaypro.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BranchName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -367,8 +370,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 19, 27, 554, DateTimeKind.Local).AddTicks(2543),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 19, 27, 554, DateTimeKind.Unspecified).AddTicks(2546), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 25, 16, 54, 13, 707, DateTimeKind.Local).AddTicks(5703),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 25, 13, 54, 13, 707, DateTimeKind.Unspecified).AddTicks(5705), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -497,8 +500,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 2, 17, 14, 19, 27, 554, DateTimeKind.Local).AddTicks(2299),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 17, 11, 19, 27, 554, DateTimeKind.Unspecified).AddTicks(2302), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 2, 25, 16, 54, 13, 707, DateTimeKind.Local).AddTicks(5453),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 2, 25, 13, 54, 13, 707, DateTimeKind.Unspecified).AddTicks(5454), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -514,10 +517,10 @@ namespace netpaypro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BankBranchId")
+                    b.Property<int?>("BankBranchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BankId")
+                    b.Property<int?>("BankId")
                         .HasColumnType("int");
 
                     b.Property<int>("BasicPay")
@@ -813,7 +816,7 @@ namespace netpaypro.Data.Migrations
             modelBuilder.Entity("netpaypro.Data.DataModels.BankBranch", b =>
                 {
                     b.HasOne("netpaypro.Data.DataModels.Bank", "Bank")
-                        .WithMany("BankBranches")
+                        .WithMany("BankBranchesList")
                         .HasForeignKey("BankId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -858,15 +861,11 @@ namespace netpaypro.Data.Migrations
                 {
                     b.HasOne("netpaypro.Data.DataModels.BankBranch", "BankBranch")
                         .WithMany()
-                        .HasForeignKey("BankBranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BankBranchId");
 
                     b.HasOne("netpaypro.Data.DataModels.Bank", "Bank")
                         .WithMany()
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BankId");
 
                     b.HasOne("netpaypro.Data.DataModels.Company", "Company")
                         .WithMany()
@@ -937,7 +936,7 @@ namespace netpaypro.Data.Migrations
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Bank", b =>
                 {
-                    b.Navigation("BankBranches");
+                    b.Navigation("BankBranchesList");
                 });
 
             modelBuilder.Entity("netpaypro.Data.DataModels.Company", b =>
