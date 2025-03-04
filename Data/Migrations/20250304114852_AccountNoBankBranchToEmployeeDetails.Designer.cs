@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250304114852_AccountNoBankBranchToEmployeeDetails")]
+    partial class AccountNoBankBranchToEmployeeDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,8 +370,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 4, 18, 5, 31, 298, DateTimeKind.Local).AddTicks(9724),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 15, 5, 31, 298, DateTimeKind.Unspecified).AddTicks(9726), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 3, 4, 14, 48, 50, 519, DateTimeKind.Local).AddTicks(5128),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 11, 48, 50, 519, DateTimeKind.Unspecified).AddTicks(5129), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -497,8 +500,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 3, 4, 18, 5, 31, 298, DateTimeKind.Local).AddTicks(9620),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 15, 5, 31, 298, DateTimeKind.Unspecified).AddTicks(9621), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 3, 4, 14, 48, 50, 519, DateTimeKind.Local).AddTicks(5073),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 11, 48, 50, 519, DateTimeKind.Unspecified).AddTicks(5074), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -511,12 +514,10 @@ namespace netpaypro.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("BankBranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BankId")
                         .HasColumnType("int");
 
                     b.Property<int>("BasicPay")
@@ -532,6 +533,7 @@ namespace netpaypro.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Designation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeId")
@@ -561,9 +563,6 @@ namespace netpaypro.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OtherEmployeeDetails")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PinNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -575,8 +574,6 @@ namespace netpaypro.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BankBranchId");
-
-                    b.HasIndex("BankId");
 
                     b.HasIndex("CompanyId");
 
@@ -861,10 +858,6 @@ namespace netpaypro.Data.Migrations
                         .WithMany()
                         .HasForeignKey("BankBranchId");
 
-                    b.HasOne("netpaypro.Data.DataModels.Bank", "Bank")
-                        .WithMany()
-                        .HasForeignKey("BankId");
-
                     b.HasOne("netpaypro.Data.DataModels.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId");
@@ -872,8 +865,6 @@ namespace netpaypro.Data.Migrations
                     b.HasOne("netpaypro.Data.DataModels.ApplicationUser", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");
-
-                    b.Navigation("Bank");
 
                     b.Navigation("BankBranch");
 

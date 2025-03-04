@@ -128,6 +128,7 @@ namespace netpaypro.Controllers.Company
             {
                 return RedirectToAction(nameof(AllCompanies));
             }
+
             var salaryDistribution = await _context.EmployeeDetails
      .Where(e => e.CompanyId == Id)
      .GroupBy(e =>
@@ -156,9 +157,7 @@ namespace netpaypro.Controllers.Company
      })
      .ToListAsync();
 
-            var employees = await _context.EmployeeDetails
-        .Where(e => e.CompanyId == Id)
-        .ToListAsync();
+            var employees = await _context.EmployeeDetails.Where(e => e.CompanyId == Id).ToListAsync();
 
             var genderDistribution = employees
                 .GroupBy(e => e.Gender)

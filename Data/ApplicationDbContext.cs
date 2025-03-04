@@ -20,21 +20,20 @@ namespace netpaypro.Data
         public DbSet<PayrollEntry> PayrollEntries { get; set; }
 
         public DbSet<Bank> Banks { get; set; }
-
         public DbSet<BankBranch> BankBranches { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<Company>()
-       .Property(c => c.TaxRate)
-       .HasPrecision(18, 4);
+                   .Property(c => c.TaxRate)
+                   .HasPrecision(18, 4);
 
             builder.Entity<ApplicationUser>()
-       .HasOne(u => u.Company)
-       .WithMany(c => c.Users)
-       .HasForeignKey(u => u.CompanyId)
-       .OnDelete(DeleteBehavior.Restrict);
+                 .HasOne(u => u.Company)
+                 .WithMany(c => c.Users)
+                 .HasForeignKey(u => u.CompanyId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Company>()
                 .HasOne(c => c.Manager)

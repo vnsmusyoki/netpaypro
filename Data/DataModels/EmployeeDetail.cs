@@ -24,15 +24,16 @@
 
         public string Gender { get; set; }
 
-        public string Designation { get; set; }
+        public string? Designation { get; set; }
 
-        public string AccountNo { get; set; }
+        public string? AccountNo { get; set; }
 
-
-
+        public Bank? Bank { get; set; }
+        public int? BankId { get; set; }
         public BankBranch? BankBranch { get; set; }
-
         public int? BankBranchId { get; set; }
+
+        public string? OtherEmployeeDetails { get; set; }
 
     }
 }

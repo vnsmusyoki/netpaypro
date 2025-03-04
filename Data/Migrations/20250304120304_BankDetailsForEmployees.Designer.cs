@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using netpaypro.Data;
 
@@ -11,9 +12,11 @@ using netpaypro.Data;
 namespace netpaypro.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250304120304_BankDetailsForEmployees")]
+    partial class BankDetailsForEmployees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -367,8 +370,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CityName = "Nairobi",
                             CountryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 4, 18, 5, 31, 298, DateTimeKind.Local).AddTicks(9724),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 15, 5, 31, 298, DateTimeKind.Unspecified).AddTicks(9726), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 3, 4, 15, 3, 2, 431, DateTimeKind.Local).AddTicks(6039),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 12, 3, 2, 431, DateTimeKind.Unspecified).AddTicks(6040), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -497,8 +500,8 @@ namespace netpaypro.Data.Migrations
                             Id = 1,
                             CountryCode = "254",
                             CountryName = "Kenya",
-                            CreatedAt = new DateTime(2025, 3, 4, 18, 5, 31, 298, DateTimeKind.Local).AddTicks(9620),
-                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 15, 5, 31, 298, DateTimeKind.Unspecified).AddTicks(9621), new TimeSpan(0, 0, 0, 0, 0))
+                            CreatedAt = new DateTime(2025, 3, 4, 15, 3, 2, 431, DateTimeKind.Local).AddTicks(5993),
+                            LastUpdatedAt = new DateTimeOffset(new DateTime(2025, 3, 4, 12, 3, 2, 431, DateTimeKind.Unspecified).AddTicks(5994), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -559,9 +562,6 @@ namespace netpaypro.Data.Migrations
 
                     b.Property<string>("NssfNo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OtherEmployeeDetails")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PinNo")
